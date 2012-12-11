@@ -42,7 +42,7 @@ do
 		brew doctor;
 
 	elif [ $i == "bash_p" ]; then
-		(cd ~ && wget https://raw.github.com/erwanjegouzo/bash_profile/master/bash_profile && mv bash_profile .bash_profile);
+		(cd ~ && wget https://raw.github.com/erwanjegouzo/MacStuff/master/bash_profile && mv bash_profile .bash_profile);
 
 	else
 		brew install $i;
