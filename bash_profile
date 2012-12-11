@@ -1,8 +1,10 @@
-#!/bin/bash
-#bash rename files with pattern
+# bash rename files with pattern
+# echo `cat $file | sed -E 's/console.log\((.*)\);?//g'` > $file
+# for i in *.min.js; do echo "$i"; done
 # for i in *.jpg; do j=`echo $i | sed 's/_ph//g'`; mv "$i" "$j"; done
 
 alias iossimulator="(cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/ && open -a iPhone\ Simulator.app)"
+#-- android simulator
 
 #--- displays the flash traces in the terminal (when running in the flash player debugger) 
 alias flog="tail -f ~/Library/Preferences/Macromedia/Flash\\ Player/Logs/flashlog.txt"
@@ -77,15 +79,12 @@ done
 
 }
 
-#
-# -------------- PATH VARIABLE
-#
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin/mongo:$PATH
+
+#--------------- PATH VARIABLES
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin/mongo:/opt/subversion/bin:$PATH
 
 
-#
-# -------------- COLORS
-#
+#------------------ COLORS
 PS1="[\[\033[36m\]\u\[\033[37m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]]$ "
 
 # LESS man page colors -------------------------------------------------
@@ -98,7 +97,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # rename all the files which contain uppercase letters to lowercase in the current folder
-filestolower()
+function filestolower()
 {
   read -p "This will rename all the files and directories to lowercase in the current folder, continue? [y/n]: " letsdothis
   if [ "$letsdothis" = "y" ] || [ "$letsdothis" = "Y" ]; then
@@ -123,7 +122,7 @@ filestolower()
 }
 
 
-tree()
+function tree()
 {
 	pwd
 	ls -R | grep ":$" |   \
@@ -132,7 +131,7 @@ tree()
 }
 
 
-cdfinder()
+function cdfinder()
 {
 cd "$(osascript -e 'tell application "Finder"' \
   -e 'set myname to POSIX path of (target of window 1 as alias)' \
@@ -141,11 +140,8 @@ cd "$(osascript -e 'tell application "Finder"' \
 
 alias l="ls -alFhG"
 
-#-To take whats in your clipboard and replace it with the same text, but stripped of html tags
-#####alias stripHTML="pbpaste | sed -e 's/<[^>]*>//g' | pbcopy"
 alias tolowercase="pbpaste | tr "[:upper:]" "[:lower:]" | pbcopy"
 alias touppercase="pbpaste | tr "[:lower:]" "[:upper:]" | pbcopy"
-alias htmlencode="pbpaste | echo $(php -r "urlencode("'$1'");") | pbcopy"
 
 #-Quick ip checkers
 function myIp(){
@@ -160,4 +156,3 @@ function myIp(){
 
 #-Dont delete your files by accident
 alias rm="rm -i"
-
