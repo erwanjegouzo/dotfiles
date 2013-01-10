@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# TODO:
-# force add trailing slash at the end of the path
-
 hostsFile=/private/etc/hosts
 apacheFile=/etc/apache2/extra/httpd-vhosts.conf
 
@@ -27,6 +24,7 @@ sudo -s <<EOF
 		<Directory "$path/$domain/">
 		Allow From All
 		AllowOverride All
+		Options Indexes FollowSymLinks MultiViews
 		</Directory>
 		<VirtualHost *:80>
 		        ServerName "$domain"
