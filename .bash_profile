@@ -1,3 +1,8 @@
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
 # bash rename files with pattern
 # echo `cat $file | sed -E 's/console.log\((.*)\);?//g'` > $file
 # for i in *.min.js; do echo "$i"; done
