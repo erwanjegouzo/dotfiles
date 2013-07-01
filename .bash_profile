@@ -23,6 +23,17 @@ alias svna="svn add . --force"
 # reverts all the changes you made
 alias svnrevertall='svn status | grep '^\[A-M-D-?]' | cut -c8- | while read f; do svn revert "$f"; done'
 
+#### SSH ####
+function sshKeyGen(){
+	echo "What's the name of the Key (no spaced please) ? ";
+	read name;
+	echo "What's the email associated with it? ";
+	read email;
+
+	`ssh-keygen -t rsa -f ~/.ssh/id_rsa_$name -C "$email"`;
+	pbcopy < ~/.ssh/id_rsa_$name.pub;
+	echo "SSH Key copied in your clipboard";
+}
 
 # path variables
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin/mongo:/opt/subversion/bin:$PATH
