@@ -1,8 +1,6 @@
-# bash rename files with pattern
-# echo `cat $file | sed -E 's/console.log\((.*)\);?//g'` > $file
-# for i in *.min.js; do echo "$i"; done
-# for i in *.jpg; do j=`echo $i | sed 's/_ph//g'`; mv "$i" "$j"; done
+# This file is an aggregation of shortcuts that I have built as well as some others randomly found.
 
+# .bash_work contains work related settings
 if [ -f ~/.bash_work ]
 then
     source ~/.bash_work
@@ -11,28 +9,41 @@ fi
 export HISTCONTROL=ignoredups
 export HISTSIZE=1000
 export HISTFILESIZE=1000
+# iTerm2 custom title on each tab
 export PROMPT_COMMAND='echo -ne "\033]0;$PWD\007"'
 
+# PATH variable, configurated to work with npm and homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:~/bin:$PATH
-#export PATH=/opt/subversion/bin:$PATH
 # for svn 1.7.6, add /opt/subversion/bin to path
+#export PATH=/opt/subversion/bin:$PATH
 export NODE_PATH="/usr/local/lib/node_modules:${NODE_PATH}"
 
+# sets your computer to sleep immediatly
 alias dodo="pmset sleepnow"
+# retrieves the http status code for any URL
 alias httpstatuscode="curl -w %{http_code} -s --output /dev/null $1"
-alias updatebashprofile="curl https://gist.github.com/erwanjegouzo/5903670/raw > ~/.bash_profile && reload"
+# reloads the prompt, usefull to take new modifications into account
 alias reload="source ~/.bash_profile"
+# grabs the latest .bash_profile file and reloads the prompt
+alias updatebashprofile="curl https://raw.github.com/erwanjegouzo/dotfiles/master/.bash_profile > ~/.bash_profile && reload"
 alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
+# opens file or folder with sublime
 alias sublime='open -a "Sublime Text 2"'
 alias flushDNS="dscacheutil -flushcache"
+# your public ip
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+# your local ip
 alias localip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+# removes a bunch of crap from your finder
 alias cleanup="find . -name '*.DS_Store' -type f -ls -delete && find . -name 'Thumbs.db' -type f -ls -delete"
+# edit the virtual hosts apache configuration file
 alias editvhost="sudo nano /etc/apache2/extra/httpd-vhosts.conf"
 
+# weather from my current location
 alias weather="curl -s 'http://rss.accuweather.com/rss/liveweather_rss.asp?metric=1&locCode=en|us|brooklyn-ny|11215' | sed -n '/Currently:/ s/.*: \(.*\): \([0-9]*\)\([CF]\).*/\2°\3, \1/p'"
+
 alias tolowercase="pbpaste | tr "[:upper:]" "[:lower:]" | pbcopy"
 alias touppercase="pbpaste | tr "[:lower:]" "[:upper:]" | pbcopy"
 
@@ -42,6 +53,7 @@ alias rm="rm -i"
 # only show dot files
 alias lsh="ls -ld .??*"
 
+# opens up the IOS Simulator without launching xcode
 alias iossimulator="(cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/ && open -a iPhone\ Simulator.app)"
 
 # Displays the flash traces in the terminal (when running in the flash player debugger) 
@@ -49,7 +61,7 @@ alias flog="tail -f ~/Library/Preferences/Macromedia/Flash\\ Player/Logs/flashlo
 # Or maybe you prefer flashlog in a gui
 alias trace='/Applications/Utilities/Console.app/Contents/MacOS/Console ~/Library/Preferences/Macromedia/Flash\ Player/Logs/flashlog.txt &'
 
-#Calculates the gzip compression of a file
+# Calculates the gzip compression of a file
 function gzipsize(){
 	echo $((`gzip -c $1 | wc -c`/1024))"KB"
 }
@@ -162,20 +174,21 @@ svn status | grep '^[A-M]' | cut -c8- | while read f; do
 done
 }
 
+# Generates a tree view from the current directory
 function tree(){
 	pwd
 	ls -R | grep ":$" |   \
 	sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 }
 
-
+# cd into the last focused finder window
 function cdfinder(){
 cd "$(osascript -e 'tell application "Finder"' \
   -e 'set myname to POSIX path of (target of window 1 as alias)' \
   -e 'end tell' 2>/dev/null)"
 }
 
-
+# Generates a random password
 function randpassw() {
 	if [ -z $1 ]; then
 		MAXSIZE=10
