@@ -19,7 +19,6 @@ function checkInstall()
 checkInstall brew "HomeBrew"
 checkInstall wget "Wget"
 checkInstall node "Node.js"
-checkInstall weinre "Weinre"
 
 read -p "Do you want a bash_profle file with some cool features? [y/n]: " bash_p
 if [ $bash_p == "y" ]; then
@@ -48,3 +47,6 @@ do
 		brew install $i;
 	fi
 done
+
+
+npm install http-server

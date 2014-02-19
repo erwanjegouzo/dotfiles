@@ -14,9 +14,12 @@ export PROMPT_COMMAND='echo -ne "\033]0;$PWD\007"'
 
 # PATH variable, configurated to work with npm and homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:~/bin:$PATH
+#support for ruby GEM
+export PATH=$(brew --prefix ruby)/bin:$PATH
 # for svn 1.7.6, add /opt/subversion/bin to path
 #export PATH=/opt/subversion/bin:$PATH
-export NODE_PATH="/usr/local/lib/node_modules:${NODE_PATH}"
+
+export NODE_PATH="/usr/local/lib/node_modules:/usr/local/share/npm/lib/node_modules:${NODE_PATH}"
 
 # sets your computer to sleep immediatly
 alias dodo="pmset sleepnow"
@@ -30,7 +33,7 @@ alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
 # opens file or folder with sublime
-alias sublime='open -a "Sublime Text 2"'
+alias s='open -a "Sublime Text"'
 alias flushDNS="dscacheutil -flushcache"
 # your public ip
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -77,12 +80,15 @@ function gitexport(){
 	git archive master | tar -x -C "$1"
 }
 
+# enhanced git log, abbreviated commit IDS, dates relative to now, author
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+
 # SVN
 alias svnremovemissing='svn status | grep '^\!' | cut -c8- | while read f; do svn rm "$f"; done'
 alias svnremovenotadded='svn status | grep '^\?' | cut -c8- | while read f; do rm -rf "$f"; done'
 alias svna="svn add . --force"
 alias svnrevertall='svn status | grep '^\[A-M-D-?]' | cut -c8- | while read f; do svn revert "$f"; done'
-
+alias svnignore='svn propset svn:ignore "$1" .'
 
 # tab completion for ssh hosts
 if [ -f ~/.ssh/known_hosts ]; then
@@ -174,6 +180,40 @@ svn status | grep '^[A-M]' | cut -c8- | while read f; do
 done
 }
 
+
+# Copies files under svn wich have been modified into another directory
+function svnexport(){
+
+if [ $# -lt 3 ]; then
+        echo "1st paramater has to be the location where you want to export the changes";
+        return 0;
+fi
+
+rev1=$1;
+rev2=$2;
+target=$3;
+
+echo $1
+
+if [ ! -d $target ]; then
+        echo "The target directory doesn't exist, create it? [y/n]: "
+        read createDir
+        if [ $createDir == "y" ]; then
+                mkdir $target
+        fi
+fi
+
+svn diff --summarize -r $rev1:$rev2 . | cut -c8- | while read f; do
+        echo "=> $f";
+        dir=`dirname $f`
+        targetDir=$target/$dir
+        if [ ! -d $targetDir ];then
+                mkdir -p $targetDir
+        fi
+        cp $f $target/$dir
+done
+}
+
 # Generates a tree view from the current directory
 function tree(){
 	pwd
@@ -210,3 +250,6 @@ function randpassw() {
 	done 
 	echo 
 }
+
+#disables shadow on screenshots
+defaults write com.apple.screencapture disable-shadow -bool true
