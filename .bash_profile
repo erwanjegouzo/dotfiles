@@ -1,11 +1,11 @@
 # This file is an aggregation of shortcuts that I have built as well as some others randomly found.
 
-# .bash_work contains work related settings
-if [ -f ~/.bash_work ]
-then
-    source ~/.bash_work
-fi
+# .bash_work contains work related stuff
+source ~/Dropbox/.dotfiles/.bash_work
+# can be found at https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
+source ~/Dropbox/.dotfiles/.gitcompletion.sh
 
+# history management
 export HISTCONTROL=ignoredups
 export HISTSIZE=1000
 export HISTFILESIZE=1000
@@ -16,10 +16,14 @@ export PROMPT_COMMAND='echo -ne "\033]0;$PWD\007"'
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:~/bin:$PATH
 #support for ruby GEM
 export PATH=$(brew --prefix ruby)/bin:$PATH
+export PATH=/Users/ejegouzo/.rvm/gems/ruby-2.0.0-p451/bin:$PATH
 # for svn 1.7.6, add /opt/subversion/bin to path
 #export PATH=/opt/subversion/bin:$PATH
 
 export NODE_PATH="/usr/local/lib/node_modules:/usr/local/share/npm/lib/node_modules:${NODE_PATH}"
+
+#grunt
+eval "$(grunt --completion=bash)"
 
 # sets your computer to sleep immediatly
 alias dodo="pmset sleepnow"
@@ -33,7 +37,7 @@ alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
 # opens file or folder with sublime
-alias s='open -a "Sublime Text"'
+alias s='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
 alias flushDNS="dscacheutil -flushcache"
 # your public ip
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -56,6 +60,7 @@ alias rm="rm -i"
 # only show dot files
 alias lsh="ls -ld .??*"
 
+alias restartdock="killall -KILL Dock"
 # opens up the IOS Simulator without launching xcode
 alias iossimulator="(cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/ && open -a iPhone\ Simulator.app)"
 
@@ -74,6 +79,14 @@ function ff(){
   find . -iname $1 | grep -v .svn | grep -v .sass-cache
 }
 
+function fif(){
+	if [ "$#" -eq 1 ]; then
+		grep -nr $1 . --color
+	else
+		s `grep -nr $1 . | sed -n $2p | cut -d: -f-2`
+	fi
+
+}
 # GIT
 function gitexport(){
 	mkdir -p "$1"
@@ -253,3 +266,5 @@ function randpassw() {
 
 #disables shadow on screenshots
 defaults write com.apple.screencapture disable-shadow -bool true
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
