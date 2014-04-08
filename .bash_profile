@@ -22,9 +22,6 @@ export PATH=/Users/ejegouzo/.rvm/gems/ruby-2.0.0-p451/bin:$PATH
 
 export NODE_PATH="/usr/local/lib/node_modules:/usr/local/share/npm/lib/node_modules:${NODE_PATH}"
 
-#grunt
-eval "$(grunt --completion=bash)"
-
 # sets your computer to sleep immediatly
 alias dodo="pmset sleepnow"
 # retrieves the http status code for any URL
@@ -93,9 +90,6 @@ function gitexport(){
 	git archive master | tar -x -C "$1"
 }
 
-# enhanced git log, abbreviated commit IDS, dates relative to now, author
-git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-
 # SVN
 alias svnremovemissing='svn status | grep '^\!' | cut -c8- | while read f; do svn rm "$f"; done'
 alias svnremovenotadded='svn status | grep '^\?' | cut -c8- | while read f; do rm -rf "$f"; done'
@@ -111,9 +105,12 @@ fi
 # Tab complete for sudo
 complete -cf sudo
 
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
 
 # COLORS
-PS1="[\[\033[36m\]\u\[\033[37m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]]$ "
+PS1="[\[\033[36m\]\u\[\033[37m\]@\[\033[33;1m\]\w\[\033[m\]\[\033[32m\]\$(parse_git_branch)\[\033[m\]\]$ "
 
 # LESS man page colors
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -266,5 +263,3 @@ function randpassw() {
 
 #disables shadow on screenshots
 defaults write com.apple.screencapture disable-shadow -bool true
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
