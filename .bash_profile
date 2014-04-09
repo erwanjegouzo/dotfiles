@@ -20,8 +20,7 @@ export PATH=/Users/ejegouzo/.rvm/gems/ruby-2.0.0-p451/bin:$PATH
 # for svn 1.7.6, add /opt/subversion/bin to path
 #export PATH=/opt/subversion/bin:$PATH
 
-export NODE_PATH="/usr/local/lib/node_modules:/usr/local/share/npm/lib/node_modules:${NODE_PATH}"
-
+export NODE_PATH="/usr/local/lib/node_modules:/usr/local/share/npm/lib/node_modules:/usr/local/lib/node_modules${NODE_PATH}"
 # sets your computer to sleep immediatly
 alias dodo="pmset sleepnow"
 # retrieves the http status code for any URL
